@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bone White Branch Link Hub</title>
+    <style>
+      :root {
+        --bone: #f6f0e8;
+        --bone-2: rgba(255, 252, 248, 0.86);
+        --bone-3: rgba(255, 252, 248, 0.92);
+        --white: #ffffff;
+        --ink: #111111;
+        --ink-2: #1d1d1d;
+        --ink-3: #2e2e2e;
+        --charcoal: #0f0f10;
+        --line: #d0ccc6;
+        --muted: #6d6863;
+        --magenta: #a4186c;
+        --shadow-lg: 0 34px 120px rgba(0, 0, 0, 0.08);
+        --shadow-md: 0 18px 40px rgba(0, 0, 0, 0.06);
+        --shadow-sm: 0 10px 28px rgba(0, 0, 0, 0.04);
+        --radius-xl: 2.3rem;
+        --radius-lg: 1.8rem;
+        --radius-md: 1.55rem;
+        --radius-sm: 1.3rem;
+        --ease: cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        height: 100%;
+      }
+
+      body {
+        margin: 0;
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        background: var(--bone);
+        color: var(--ink);
+        overflow-x: hidden;
+      }
+
+      body::before,
+      body::after {
+        content: "";
+        position: fixed;
+        inset: auto;
+        pointer-events: none;
+        filter: blur(72px);
+        z-index: 0;
+      }
+
+      body::before {
+        top: -8rem;
+        left: -6rem;
+        width: 28rem;
+        height: 28rem;
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.88), transparent 62%);
+      }
+
+      body::after {
+        top: 4rem;
+        right: -6rem;
+        width: 20rem;
+        height: 20rem;
+        background: radial-gradient(circle, rgba(164, 24, 108, 0.08), transparent 62%);
+      }
+
+      .page-glow {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        background:
+          radial-gradient(circle at top left, rgba(255, 255, 255, 0.72), transparent 26%),
+          radial-gradient(circle at 88% 12%, rgba(164, 24, 108, 0.08), transparent 20%),
+          radial-gradient(circle at 50% 100%, rgba(0, 0, 0, 0.045), transparent 28%);
+        z-index: 0;
+      }
+
+      .page-glow::after {
+        content: "";
+        position: absolute;
+        bottom: -14%;
+        left: 25%;
+        width: 22rem;
+        height: 22rem;
+        background: radial-gradient(circle, rgba(0, 0, 0, 0.05), transparent 62%);
+        filter: blur(72px);
+      }
+
+      .app {
+        position: relative;
+        z-index: 1;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2.5rem 1.25rem;
+      }
+
+      .shell {
+        width: 100%;
+        max-width: 640px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius-xl);
+        background: var(--bone-2);
+        backdrop-filter: blur(20px);
+        box-shadow: var(--shadow-lg);
+        padding: 1.5rem;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .shell::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.26), transparent 46%);
+        pointer-events: none;
+      }
+
+      .view {
+        position: relative;
+        z-index: 1;
+        opacity: 0;
+        transform: translateY(12px);
+        animation: rise 380ms var(--ease) forwards;
+      }
+
+      @keyframes rise {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .profile {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+
+      .avatar {
+        position: relative;
+        width: 120px;
+        height: 120px;
+        border-radius: 999px;
+        border: 1px solid var(--ink);
+        background: var(--white);
+        box-shadow: 0 0 0 10px rgba(255, 251, 247, 0.95), 0 0 28px rgba(164, 24, 108, 0.09);
+        display: grid;
+        place-items: center;
+        overflow: hidden;
+      }
+
+      .avatar::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        background: radial-gradient(circle at top, rgba(164, 24, 108, 0.08), transparent 45%);
+      }
+
+      .avatar-icon {
+        position: relative;
+        width: 32px;
+        height: 32px;
+        border: 2px solid var(--ink-3);
+        border-radius: 10px;
+      }
+
+      .avatar-icon::before {
+        content: "";
+        position: absolute;
+        top: 7px;
+        left: 7px;
+        width: 10px;
+        height: 10px;
+        border: 2px solid var(--ink-3);
+        border-radius: 999px;
+      }
+
+      .avatar-icon::after {
+        content: "";
+        position: absolute;
+        top: -6px;
+        right: 4px;
+        width: 12px;
+        height: 6px;
+        border: 2px solid var(--ink-3);
+        border-bottom: none;
+        border-radius: 6px 6px 0 0;
+      }
+
+      .logo-slot {
+        margin-top: 1.5rem;
+        min-height: 76px;
+        width: 100%;
+        max-width: 280px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem 1.5rem;
+        border: 1px solid var(--charcoal);
+        border-radius: var(--radius-md);
+        background: var(--charcoal);
+        color: var(--white);
+        text-align: center;
+        box-shadow: 0 18px 50px rgba(0, 0, 0, 0.14), 0 0 26px rgba(164, 24, 108, 0.12);
+      }
+
+      .logo-kicker,
+      .eyebrow,
+      .card-label,
+      .section-label,
+      .meta-label,
+      .info-label,
+      .group-title,
+      .error-label {
+        text-transform: uppercase;
+        letter-spacing: 0.28em;
+      }
+
+      .logo-kicker {
+        font-size: 0.56rem;
+        color: #b8b0a8;
+      }
+
+      .logo-title {
+        margin-top: 0.55rem;
+        font-size: 1rem;
+        font-weight: 500;
+        letter-spacing: 0.18em;
+      }
+
+      .eyebrow {
+        margin-top: 1.5rem;
+        font-size: 0.68rem;
+        color: var(--muted);
+      }
+
+      .title {
+        margin: 0.75rem 0 0;
+        font-size: clamp(2.7rem, 8vw, 3.2rem);
+        line-height: 0.9;
+        letter-spacing: -0.07em;
+        font-weight: 600;
+      }
+
+      .intro {
+        margin: 1rem auto 0;
+        max-width: 34ch;
+        font-size: 0.95rem;
+        line-height: 1.7;
+        color: var(--muted);
+      }
+
+      .divider {
+        height: 1px;
+        background: var(--line);
+        margin: 2rem 0;
+      }
+
+      .link-list,
+      .destinations,
+      .info-grid,
+      .group-list {
+        display: grid;
+        gap: 0.75rem;
+      }
+
+      .link-button,
+      .destination {
+        width: 100%;
+        border-radius: var(--radius-md);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        text-decoration: none;
+        transition:
+          border-color 280ms var(--ease),
+          background-color 280ms var(--ease),
+          box-shadow 280ms var(--ease),
+          transform 280ms var(--ease),
+          color 280ms var(--ease);
+      }
+
+      .link-button {
+        border: 1px solid var(--line);
+        background: var(--bone-3);
+        padding: 1rem 1.25rem;
+        box-shadow: var(--shadow-sm);
+        cursor: pointer;
+      }
+
+      .link-button:hover,
+      .link-button:focus-visible {
+        transform: translateY(-1px);
+        border-color: #9a9289;
+        background: var(--white);
+        box-shadow: var(--shadow-md);
+        outline: none;
+      }
+
+      .button-left {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        min-width: 0;
+      }
+
+      .icon-badge,
+      .arrow-badge,
+      .page-icon {
+        flex: 0 0 auto;
+        display: grid;
+        place-items: center;
+        border-radius: 999px;
+      }
+
+      .icon-badge {
+        width: 44px;
+        height: 44px;
+        border: 1px solid var(--line);
+        background: var(--white);
+        color: var(--ink);
+      }
+
+      .link-button:hover .icon-badge,
+      .link-button:focus-visible .icon-badge,
+      .destination:hover .arrow-badge,
+      .destination:focus-visible .arrow-badge {
+        border-color: rgba(164, 24, 108, 0.4);
+        box-shadow: 0 0 18px rgba(164, 24, 108, 0.1);
+      }
+
+      .button-copy,
+      .destination-copy {
+        min-width: 0;
+      }
+
+      .card-label {
+        font-size: 0.6rem;
+        color: var(--muted);
+      }
+
+      .card-title {
+        margin-top: 0.3rem;
+        font-size: 1rem;
+        font-weight: 500;
+        color: var(--ink);
+      }
+
+      .arrow-badge {
+        width: 40px;
+        height: 40px;
+        border: 1px solid var(--line);
+        background: var(--white);
+        color: var(--muted);
+      }
+
+      .arrow {
+        width: 10px;
+        height: 10px;
+        border-top: 1.6px solid currentColor;
+        border-right: 1.6px solid currentColor;
+        transform: rotate(45deg);
+        margin-left: -2px;
+      }
+
+      .branch-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 1rem;
+      }
+
+      .back-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.55rem;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.9);
+        color: var(--ink-3);
+        padding: 0.65rem 0.95rem;
+        font-size: 0.92rem;
+        cursor: pointer;
+        transition: border-color 220ms var(--ease), background-color 220ms var(--ease);
+      }
+
+      .back-button:hover,
+      .back-button:focus-visible {
+        border-color: #9a9289;
+        background: var(--white);
+        outline: none;
+      }
+
+      .back-arrow {
+        width: 8px;
+        height: 8px;
+        border-left: 1.6px solid currentColor;
+        border-bottom: 1.6px solid currentColor;
+        transform: rotate(45deg);
+        margin-right: 1px;
+      }
+
+      .branch-header {
+        margin-top: 1.5rem;
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+      }
+
+      .page-icon {
+        width: 56px;
+        height: 56px;
+        border: 1px solid var(--charcoal);
+        background: var(--charcoal);
+        color: var(--white);
+        box-shadow: 0 0 24px rgba(164, 24, 108, 0.12);
+      }
+
+      .section-label {
+        font-size: 0.66rem;
+        color: var(--muted);
+      }
+
+      .branch-title {
+        margin: 0.7rem 0 0;
+        font-size: clamp(2rem, 7vw, 2.2rem);
+        line-height: 0.95;
+        letter-spacing: -0.06em;
+        font-weight: 600;
+      }
+
+      .branch-description {
+        margin-top: 1rem;
+        max-width: 42ch;
+        font-size: 0.95rem;
+        line-height: 1.7;
+        color: var(--muted);
+      }
+
+      .info-grid {
+        margin-top: 1.5rem;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .info-card {
+        border: 1px solid var(--line);
+        border-radius: var(--radius-lg);
+        background: rgba(255, 255, 255, 0.62);
+        padding: 1rem;
+        box-shadow: var(--shadow-sm);
+      }
+
+      .info-label {
+        font-size: 0.56rem;
+        color: var(--muted);
+      }
+
+      .info-value {
+        margin-top: 0.5rem;
+        font-size: 0.98rem;
+        line-height: 1.5;
+        color: var(--ink);
+      }
+
+      .group-shell,
+      .destinations-shell,
+      .error-shell {
+        margin-top: 1.5rem;
+        border-radius: var(--radius-lg);
+        padding: 1.25rem;
+      }
+
+      .group-shell {
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.62);
+        box-shadow: var(--shadow-sm);
+      }
+
+      .group-title {
+        font-size: 0.6rem;
+        color: var(--muted);
+      }
+
+      .group-list {
+        margin-top: 0.9rem;
+      }
+
+      .group-item {
+        border: 1px solid var(--line);
+        border-radius: var(--radius-md);
+        background: var(--bone-3);
+        padding: 1rem;
+      }
+
+      .group-meta {
+        margin-top: 0.35rem;
+        font-size: 0.9rem;
+        line-height: 1.6;
+        color: var(--muted);
+      }
+
+      .destinations-shell {
+        border: 1px solid var(--charcoal);
+        background: var(--charcoal);
+        color: var(--white);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.16), 0 0 26px rgba(164, 24, 108, 0.12);
+      }
+
+      .meta-label {
+        font-size: 0.6rem;
+        color: #b8b0a8;
+      }
+
+      .destinations {
+        margin-top: 1rem;
+      }
+
+      .destination {
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: rgba(255, 255, 255, 0.05);
+        color: var(--white);
+        padding: 1rem;
+      }
+
+      .destination:hover,
+      .destination:focus-visible {
+        border-color: rgba(164, 24, 108, 0.35);
+        background: rgba(255, 255, 255, 0.08);
+        outline: none;
+      }
+
+      .destination .card-label {
+        color: #8e8780;
+      }
+
+      .destination .card-title {
+        color: var(--white);
+      }
+
+      .destination .arrow-badge {
+        border-color: rgba(255, 255, 255, 0.12);
+        background: transparent;
+        color: #d7d1cb;
+      }
+
+      .destination:hover .arrow-badge,
+      .destination:focus-visible .arrow-badge {
+        color: #f4d5e7;
+        box-shadow: 0 0 20px rgba(164, 24, 108, 0.14);
+      }
+
+      .error-shell {
+        border: 1px solid #5a122f;
+        background: rgba(90, 18, 47, 0.08);
+        box-shadow: var(--shadow-sm);
+      }
+
+      .error-label {
+        font-size: 0.6rem;
+        color: #7d1f49;
+      }
+
+      .error-message {
+        margin-top: 0.8rem;
+        font-size: 0.95rem;
+        line-height: 1.7;
+        color: var(--ink);
+      }
+
+      .icon-svg {
+        width: 20px;
+        height: 20px;
+        stroke: currentColor;
+        stroke-width: 1.8;
+        fill: none;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      @media (max-width: 640px) {
+        .app {
+          padding: 1.25rem 0.9rem;
+        }
+
+        .shell {
+          padding: 1.15rem;
+          border-radius: 1.9rem;
+        }
+
+        .divider {
+          margin: 1.6rem 0;
+        }
+
+        .branch-top {
+          display: block;
+        }
+
+        .info-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page-glow"></div>
+    <div class="app">
+      <section class="shell">
+        <div id="view" class="view"></div>
+      </section>
+    </div>
+
+    <script>
+      const sections = [
+        {
+          id: 'gallery',
+          label: 'Personal Gallery',
+          icon: 'gallery',
+          description: 'A page for visual work, image sets, and public-facing collections. This branch holds the gallery layer and the public channels most likely to carry visual updates.',
+          info: [
+            { label: 'Page Type', value: 'Gallery and visual archive' },
+            { label: 'Primary Use', value: 'Images, collections, and visual references' },
+          ],
+          groups: [
+            {
+              title: 'What belongs here',
+              items: [
+                { label: 'Featured work', meta: 'Use this page for selected images, covers, and collection links.' },
+                { label: 'Visual updates', meta: 'Pair gallery drops with Instagram or Facebook when public-facing.' },
+              ],
+            },
+          ],
+          links: [
+            { label: 'Instagram', href: 'https://www.instagram.com/bndrllc', icon: 'instagram' },
+            { label: 'Facebook', href: 'https://www.facebook.com/BNDRLLC', icon: 'facebook' },
+          ],
+        },
+        {
+          id: 'wip',
+          label: 'Works In Progress',
+          icon: 'layers',
+          description: 'A page for current builds, active development, experiments, and shipping progress. This branch points to the channels most relevant to live creation and iteration.',
+          info: [
+            { label: 'Page Type', value: 'Active work and development' },
+            { label: 'Primary Use', value: 'Build logs, prototypes, and experiments' },
+          ],
+          groups: [
+            {
+              title: 'What belongs here',
+              items: [
+                { label: 'Code and commits', meta: 'Use GitHub for repos, current work, and technical progress.' },
+                { label: 'Prompt products', meta: 'Use PromptBase for published prompt assets and packaged prompt work.' },
+              ],
+            },
+          ],
+          links: [
+            { label: 'GitHub', href: 'https://github.com/BNDRBOTS', icon: 'github' },
+            { label: 'PromptBase', href: 'https://promptbase.com/profile/bndrllc', icon: 'sparkles' },
+          ],
+        },
+        {
+          id: 'blog',
+          label: 'Blog',
+          icon: 'book',
+          description: 'A page for writing, updates, articles, and long-form publishing. This branch is wired to the writing and distribution platforms already provided.',
+          info: [
+            { label: 'Page Type', value: 'Writing and publication' },
+            { label: 'Primary Use', value: 'Posts, essays, updates, and release notes' },
+          ],
+          groups: [
+            {
+              title: 'What belongs here',
+              items: [
+                { label: 'Main publication', meta: 'Use Substack for articles, notes, and ongoing public writing.' },
+                { label: 'Release notes', meta: 'Link writing to GitHub when posts reference shipped work or code.' },
+              ],
+            },
+          ],
+          links: [
+            { label: 'Substack', href: 'https://substack.com/@bndrllc', icon: 'book' },
+            { label: 'GitHub', href: 'https://github.com/BNDRBOTS', icon: 'github' },
+          ],
+        },
+        {
+          id: 'social',
+          label: 'Social Links',
+          icon: 'share',
+          description: 'A single page for public channels, profiles, and audience-facing destinations. This branch collects the main external platforms into one clean directory.',
+          info: [
+            { label: 'Page Type', value: 'Social and public directory' },
+            { label: 'Primary Use', value: 'Profiles, updates, and audience touchpoints' },
+          ],
+          groups: [
+            {
+              title: 'Primary platforms',
+              items: [
+                { label: 'Professional', meta: 'LinkedIn and GitHub' },
+                { label: 'Public and social', meta: 'Instagram and Facebook' },
+                { label: 'Publishing', meta: 'Substack' },
+              ],
+            },
+          ],
+          links: [
+            { label: 'LinkedIn', href: 'https://www.linkedin.com/in/bndrtech/', icon: 'linkedin' },
+            { label: 'GitHub', href: 'https://github.com/BNDRBOTS', icon: 'github' },
+            { label: 'Instagram', href: 'https://www.instagram.com/bndrllc', icon: 'instagram' },
+            { label: 'Facebook', href: 'https://www.facebook.com/BNDRLLC', icon: 'facebook' },
+            { label: 'Substack', href: 'https://substack.com/@bndrllc', icon: 'book' },
+          ],
+        },
+        {
+          id: 'bio',
+          label: 'Bio',
+          icon: 'user',
+          description: 'A concise identity page for core positioning, public profile access, and direct contact details already supplied.',
+          info: [
+            { label: 'Email', value: 'bndr.labs@gmail.com' },
+            { label: 'Phone', value: '717-919-7731' },
+          ],
+          groups: [
+            {
+              title: 'Public profile references',
+              items: [
+                { label: 'LinkedIn', meta: 'Professional profile and public-facing background.' },
+                { label: 'Facebook', meta: 'Additional public presence and brand page.' },
+              ],
+            },
+          ],
+          links: [
+            { label: 'LinkedIn', href: 'https://www.linkedin.com/in/bndrtech/', icon: 'linkedin' },
+            { label: 'Facebook', href: 'https://www.facebook.com/BNDRLLC', icon: 'facebook' },
+            { label: 'Email', href: 'mailto:bndr.labs@gmail.com', icon: 'mail' },
+            { label: 'Phone', href: 'tel:17179197731', icon: 'phone' },
+          ],
+        },
+        {
+          id: 'work',
+          label: 'Work with Me',
+          icon: 'briefcase',
+          description: 'A direct page for inquiries, product platforms, support, and contact. This branch is wired to the strongest action points from the links provided.',
+          info: [
+            { label: 'Email', value: 'bndr.labs@gmail.com' },
+            { label: 'Phone', value: '717-919-7731' },
+          ],
+          groups: [
+            {
+              title: 'Primary action paths',
+              items: [
+                { label: 'Direct contact', meta: 'Email and phone for direct outreach.' },
+                { label: 'Products', meta: 'Gumroad and PromptBase for published digital work.' },
+                { label: 'Support', meta: 'Buy Me a Coffee for direct support.' },
+              ],
+            },
+          ],
+          links: [
+            { label: 'Email', href: 'mailto:bndr.labs@gmail.com', icon: 'mail' },
+            { label: 'Phone', href: 'tel:17179197731', icon: 'phone' },
+            { label: 'Gumroad', href: 'https://bndrllc.gumroad.com/', icon: 'bag' },
+            { label: 'PromptBase', href: 'https://promptbase.com/profile/bndrllc', icon: 'sparkles' },
+            { label: 'Buy Me a Coffee', href: 'https://buymeacoffee.com/bndr', icon: 'coffee' },
+          ],
+        },
+      ];
+
+      const HOME_ROUTE = 'home';
+      const view = document.getElementById('view');
+      const routeMap = new Map();
+      let configError = null;
+
+      function isUsableHref(href) {
+        return typeof href === 'string' && /^(https:\/\/|mailto:|tel:)/.test(href.trim());
+      }
+
+      function validateConfig() {
+        const seen = new Set();
+
+        for (const section of sections) {
+          if (!section || typeof section !== 'object') {
+            throw new Error('Section entry is missing or invalid.');
+          }
+          if (!section.id || typeof section.id !== 'string') {
+            throw new Error('A section is missing a valid id.');
+          }
+          if (section.id === HOME_ROUTE) {
+            throw new Error('A section cannot use the reserved route "home".');
+          }
+          if (seen.has(section.id)) {
+            throw new Error(`Duplicate route id detected: ${section.id}`);
+          }
+          seen.add(section.id);
+          if (!section.label || typeof section.label !== 'string') {
+            throw new Error(`Section ${section.id} is missing a label.`);
+          }
+          if (!section.icon || typeof section.icon !== 'string') {
+            throw new Error(`Section ${section.id} is missing an icon.`);
+          }
+          if (!section.description || typeof section.description !== 'string') {
+            throw new Error(`Section ${section.id} is missing a description.`);
+          }
+          if (!Array.isArray(section.links) || section.links.length === 0) {
+            throw new Error(`Section ${section.id} must have at least one working link.`);
+          }
+
+          for (const link of section.links) {
+            if (!link || typeof link !== 'object') {
+              throw new Error(`Section ${section.id} has an invalid link entry.`);
+            }
+            if (!link.label || typeof link.label !== 'string') {
+              throw new Error(`Section ${section.id} has a link without a label.`);
+            }
+            if (!isUsableHref(link.href)) {
+              throw new Error(`Section ${section.id} has a link without a usable href: ${link.label}`);
+            }
+          }
+
+          routeMap.set(section.id, section);
+        }
+      }
+
+      try {
+        validateConfig();
+      } catch (error) {
+        configError = error instanceof Error ? error.message : 'Configuration validation failed.';
+      }
+
+      function getRoute() {
+        const hash = window.location.hash.replace('#', '').trim();
+        if (!hash || hash === HOME_ROUTE) return HOME_ROUTE;
+        return routeMap.has(hash) ? hash : HOME_ROUTE;
+      }
+
+      function setRoute(next) {
+        const resolved = next === HOME_ROUTE ? HOME_ROUTE : routeMap.has(next) ? next : HOME_ROUTE;
+        const target = resolved === HOME_ROUTE ? `#${HOME_ROUTE}` : `#${resolved}`;
+        if (window.location.hash !== target) {
+          window.location.hash = target;
+          return;
+        }
+        render();
+      }
+
+      function icon(name) {
+        const icons = {
+          gallery: '<svg class="icon-svg" viewBox="0 0 24 24"><rect x="3.5" y="4.5" width="17" height="15" rx="2.5"/><path d="M7 15l2.7-2.7a1.5 1.5 0 0 1 2.1 0L14 14.5l1.7-1.7a1.5 1.5 0 0 1 2.1 0L20 15"/><circle cx="9" cy="9" r="1.2"/></svg>',
+          layers: '<svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 4l8 4-8 4-8-4 8-4Z"/><path d="M4 12l8 4 8-4"/><path d="M4 16l8 4 8-4"/></svg>',
+          book: '<svg class="icon-svg" viewBox="0 0 24 24"><path d="M6.5 5.5h10a2 2 0 0 1 2 2v11H8.5a2 2 0 0 0-2 2Z"/><path d="M6.5 5.5v15"/><path d="M8.5 20.5h10"/></svg>',
+          share: '<svg class="icon-svg" viewBox="0 0 24 24"><circle cx="18" cy="5" r="2.2"/><circle cx="6" cy="12" r="2.2"/><circle cx="18" cy="19" r="2.2"/><path d="M8 11l7.7-4.4"/><path d="M8 13l7.7 4.4"/></svg>',
+          user: '<svg class="icon-svg" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.4"/><path d="M5 19a7 7 0 0 1 14 0"/></svg>',
+          briefcase: '<svg class="icon-svg" viewBox="0 0 24 24"><rect x="3.5" y="7.5" width="17" height="11" rx="2.2"/><path d="M9 7.5V6a1.5 1.5 0 0 1 1.5-1.5h3A1.5 1.5 0 0 1 15 6v1.5"/><path d="M3.5 11.5h17"/></svg>',
+          instagram: '<svg class="icon-svg" viewBox="0 0 24 24"><rect x="4.2" y="4.2" width="15.6" height="15.6" rx="4"/><circle cx="12" cy="12" r="3.4"/><circle cx="17.2" cy="6.8" r="0.8" fill="currentColor" stroke="none"/></svg>',
+          linkedin: '<svg class="icon-svg" viewBox="0 0 24 24"><rect x="4.2" y="4.2" width="15.6" height="15.6" rx="2.4"/><path d="M8.2 10.2v6.3"/><path d="M8.2 7.7h.01"/><path d="M11.7 16.5v-3.7a2 2 0 0 1 4 0v3.7"/><path d="M11.7 10.2v6.3"/></svg>',
+          globe: '<svg class="icon-svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.2"/><path d="M3.8 12h16.4"/><path d="M12 3.8c2.2 2.3 3.5 5.1 3.5 8.2S14.2 17.9 12 20.2"/><path d="M12 3.8C9.8 6.1 8.5 8.9 8.5 12s1.3 5.9 3.5 8.2"/></svg>',
+          mail: '<svg class="icon-svg" viewBox="0 0 24 24"><rect x="3.8" y="6" width="16.4" height="12" rx="2.2"/><path d="M4.6 7.2 12 12.6l7.4-5.4"/></svg>',
+          phone: '<svg class="icon-svg" viewBox="0 0 24 24"><path d="M6 4.8h3l1.4 3.4-1.8 1.8a15.5 15.5 0 0 0 5.4 5.4l1.8-1.8 3.4 1.4v3c0 .9-.7 1.6-1.6 1.6C10.8 19.6 4.4 13.2 4.4 6.4 4.4 5.5 5.1 4.8 6 4.8Z"/></svg>',
+          github: '<svg class="icon-svg" viewBox="0 0 24 24"><path d="M9 18.8c-4 .9-4-2.2-5.6-2.7"/><path d="M14.6 20v-2.5a3.6 3.6 0 0 0-1-2.8c3.3-.4 6.8-1.6 6.8-7.1a5.5 5.5 0 0 0-1.5-3.8 5.2 5.2 0 0 0-.1-3.7s-1.2-.4-4 1.5a13.8 13.8 0 0 0-7.3 0c-2.8-1.9-4-1.5-4-1.5a5.2 5.2 0 0 0-.1 3.7A5.5 5.5 0 0 0 2 7.6c0 5.5 3.5 6.7 6.8 7.1a3.2 3.2 0 0 0-.9 2.5V20"/></svg>',
+          facebook: '<svg class="icon-svg" viewBox="0 0 24 24"><path d="M13.2 20v-7h2.4l.4-3h-2.8V8.2c0-.9.2-1.5 1.5-1.5H16V4.1c-.2 0-1-.1-2-.1-2 0-3.4 1.2-3.4 3.5V10H8v3h2.6v7"/></svg>',
+          coffee: '<svg class="icon-svg" viewBox="0 0 24 24"><path d="M6 8.5h9.5a1.5 1.5 0 0 1 1.5 1.5v2a5 5 0 0 1-5 5H10a4 4 0 0 1-4-4Z"/><path d="M17 10h1.2A2.8 2.8 0 0 1 21 12.8 2.8 2.8 0 0 1 18.2 15H17"/><path d="M7 20h10"/></svg>',
+          bag: '<svg class="icon-svg" viewBox="0 0 24 24"><path d="M6 8.5h12l-.9 10a2 2 0 0 1-2 1.8H8.9a2 2 0 0 1-2-1.8Z"/><path d="M9 8.5V7a3 3 0 0 1 6 0v1.5"/></svg>',
+          sparkles: '<svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 3.5 13.8 8l4.7 1.8-4.7 1.8L12 16.1l-1.8-4.5L5.5 9.8 10.2 8 12 3.5Z"/><path d="M18.5 15.5 19.4 18l2.6.9-2.6 1-1 2.6-.9-2.6-2.6-1 2.6-.9.9-2.5Z"/></svg>',
+        };
+        return icons[name] || icons.gallery;
+      }
+
+      function renderInfo(info) {
+        if (!Array.isArray(info) || !info.length) return '';
+        return `
+          <div class="info-grid">
+            ${info
+              .map(
+                (entry) => `
+                  <div class="info-card">
+                    <div class="info-label">${entry.label}</div>
+                    <div class="info-value">${entry.value}</div>
+                  </div>
+                `
+              )
+              .join('')}
+          </div>
+        `;
+      }
+
+      function renderGroups(groups) {
+        if (!Array.isArray(groups) || !groups.length) return '';
+        return groups
+          .map(
+            (group) => `
+              <div class="group-shell">
+                <div class="group-title">${group.title}</div>
+                <div class="group-list">
+                  ${group.items
+                    .map(
+                      (item) => `
+                        <div class="group-item">
+                          <div class="card-title">${item.label}</div>
+                          <div class="group-meta">${item.meta}</div>
+                        </div>
+                      `
+                    )
+                    .join('')}
+                </div>
+              </div>
+            `
+          )
+          .join('');
+      }
+
+      function renderHome() {
+        return `
+          <div class="profile">
+            <div class="avatar">
+              <div class="avatar-icon"></div>
+            </div>
+
+            <div class="logo-slot">
+              <div>
+                <div class="logo-kicker">Logo Area</div>
+                <div class="logo-title">YOUR LOGO</div>
+              </div>
+            </div>
+
+            <div class="eyebrow">Profile Hub</div>
+            <h1 class="title">Quiet luxury.</h1>
+            <p class="intro">A clean personal hub with direct paths into gallery, work, writing, contact, and social pages.</p>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="link-list">
+            ${sections
+              .map(
+                (item) => `
+                  <button class="link-button" data-route="${item.id}" type="button" aria-label="Open ${item.label}">
+                    <div class="button-left">
+                      <div class="icon-badge">${icon(item.icon)}</div>
+                      <div class="button-copy">
+                        <div class="card-label">Open</div>
+                        <div class="card-title">${item.label}</div>
+                      </div>
+                    </div>
+                    <div class="arrow-badge"><span class="arrow"></span></div>
+                  </button>
+                `
+              )
+              .join('')}
+          </div>
+        `;
+      }
+
+      function renderBranch(item) {
+        return `
+          <div class="branch-top">
+            <button class="back-button" data-route="home" type="button" aria-label="Back to home">
+              <span class="back-arrow"></span>
+              <span>Back</span>
+            </button>
+          </div>
+
+          <div class="branch-header">
+            <div class="page-icon">${icon(item.icon)}</div>
+            <div>
+              <div class="section-label">Branch Page</div>
+              <h2 class="branch-title">${item.label}</h2>
+              <p class="branch-description">${item.description}</p>
+            </div>
+          </div>
+
+          ${renderInfo(item.info)}
+          ${renderGroups(item.groups)}
+
+          <div class="destinations-shell">
+            <div class="meta-label">Destinations</div>
+            <div class="destinations">
+              ${item.links
+                .map(
+                  (link) => `
+                    <a class="destination" href="${link.href}" aria-label="Open ${link.label}">
+                      <div class="destination-copy">
+                        <div class="card-label">Link</div>
+                        <div class="card-title">${link.label}</div>
+                      </div>
+                      <div class="arrow-badge">${icon(link.icon || 'globe')}</div>
+                    </a>
+                  `
+                )
+                .join('')}
+            </div>
+          </div>
+        `;
+      }
+
+      function renderError(message) {
+        return `
+          <div class="error-shell">
+            <div class="error-label">Configuration Error</div>
+            <div class="error-message">${message}</div>
+          </div>
+        `;
+      }
+
+      function bindRouteButtons() {
+        view.querySelectorAll('[data-route]').forEach((element) => {
+          element.addEventListener('click', () => {
+            const next = element.getAttribute('data-route');
+            setRoute(next);
+          });
+        });
+      }
+
+      function verifyRenderedState(route) {
+        if (route === HOME_ROUTE) {
+          const homeButtons = view.querySelectorAll('.link-button[data-route]');
+          if (homeButtons.length !== sections.length) {
+            throw new Error('Home page route buttons did not render for every assigned page.');
+          }
+          return;
+        }
+
+        const section = routeMap.get(route);
+        if (!section) {
+          throw new Error(`Route ${route} resolved without page data.`);
+        }
+
+        const heading = view.querySelector('.branch-title');
+        if (!heading || heading.textContent.trim() !== section.label) {
+          throw new Error(`Rendered content mismatch for route ${route}.`);
+        }
+
+        const renderedLinks = Array.from(view.querySelectorAll('.destination[href]')).map((node) => node.getAttribute('href'));
+        const expectedLinks = section.links.map((link) => link.href);
+
+        if (renderedLinks.length !== expectedLinks.length) {
+          throw new Error(`Rendered link count mismatch for route ${route}.`);
+        }
+
+        for (let index = 0; index < expectedLinks.length; index += 1) {
+          if (renderedLinks[index] !== expectedLinks[index]) {
+            throw new Error(`Rendered link mismatch for route ${route} at position ${index + 1}.`);
+          }
+        }
+      }
+
+      function render() {
+        if (configError) {
+          view.classList.remove('view');
+          void view.offsetWidth;
+          view.classList.add('view');
+          view.innerHTML = renderError(configError);
+          return;
+        }
+
+        const route = getRoute();
+        const item = route === HOME_ROUTE ? null : routeMap.get(route);
+
+        view.classList.remove('view');
+        void view.offsetWidth;
+        view.classList.add('view');
+        view.innerHTML = route === HOME_ROUTE ? renderHome() : renderBranch(item);
+
+        bindRouteButtons();
+        verifyRenderedState(route);
+      }
+
+      window.addEventListener('hashchange', render);
+
+      if (!window.location.hash) {
+        window.location.hash = `#${HOME_ROUTE}`;
+      }
+
+      render();
+    </script>
+  </body>
+</html>
